@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Capstone.Classes;
+
 
 namespace Capstone.Views
 {
@@ -12,11 +14,11 @@ namespace Capstone.Views
         /// <summary>
         /// Constructor adds items to the top-level menu
         /// </summary>
-        public MainMenu() : base()
+        public MainMenu(VendingMachine vm) : base(vm)
         {
             this.Title = "*** Main Menu ***";
-            this.menuOptions.Add("1", "Option One");
-            this.menuOptions.Add("2", "Add two numbers");
+            this.menuOptions.Add("1", "Display Vending Machine Items");
+            this.menuOptions.Add("2", "Purchase");
             this.menuOptions.Add("Q", "Quit");
         }
 
@@ -31,14 +33,22 @@ namespace Capstone.Views
             switch (choice)
             {
                 case "1":
-                    // This is just a sample, does nothing
+
+                    foreach (Stock item in Vendomatic.StockList)
+                    {
+                        Console.WriteLine($"{item.Location} Name:{item.Product.Name} Price:{item.Product.Price} Quantity: {item.Quantity}");
+                    }
+                    Pause("");
+                    // This should show our dictionary of Products from Vending Machine class.
+                    // be able to go up one menu when "Q"
                     return true;
                 case "2":
-                    // Get some input form the user, and then do something
-                    int someNumber = GetInteger("Please enter a whole number:");
-                    int anotherNumber = GetInteger("Please enter another whole number:");
-                    Console.WriteLine($"{someNumber} + {anotherNumber} = {someNumber + anotherNumber}.");
+
+                    PurchaseMenu Menu = new PurchaseMenu(Vendomatic);
+                    Menu.Run();
                     Pause("");
+
+                    
                     return true;
             }
             return true;
