@@ -10,8 +10,9 @@ namespace Capstone.Views
     {
         List<Stock> RemovedItems = new List<Stock>();
 
-        StreamWriter AuditLog = new StreamWriter("Log.txt");
+        //StreamWriter AuditLog = new StreamWriter("Log.txt");
     
+        
 
         public PurchaseMenu(VendingMachine vm) : base(vm)
         {
@@ -22,18 +23,26 @@ namespace Capstone.Views
             this.menuOptions.Add("Q", "Quit");
         }
         
+        private void WriteLog(string line)
+        {
+            using (StreamWriter AuditLog = new StreamWriter("Log.txt", true))
+            {
+                AuditLog.WriteLine(line);
+            }
+        }
+
         protected override bool ExecuteSelection(string choice)
         {
-            Console.WriteLine($"Your current balance {Vendomatic.Balance}");
+            Console.WriteLine($"Your current balance {Vendomatic.Balance:C}");
             switch (choice)
             {
                 case "1":
-                    Console.WriteLine("Please enter the amount to be deposited");
+                    Console.WriteLine("Please enter the amount to be deposited in bills of $1.00, $2.00, $5.00, or $10.00");
                     string moneyInput = Console.ReadLine();
                     Vendomatic.FeedMoney(decimal.Parse(moneyInput));
-                    Console.WriteLine($"New Current Balance: {Vendomatic.Balance}");
+                    Console.WriteLine($"New Current Balance: {Vendomatic.Balance:C}");
                     string line = $"{DateTime.Now}   Feed Money:    ${moneyInput}.00     {Vendomatic.Balance:C}";
-                    AuditLog.WriteLine(line);               
+                    WriteLog(line);               
                     Pause("");
 
                     return true;
@@ -67,13 +76,16 @@ namespace Capstone.Views
                                 {
                                     if (item.Quantity > 0)
                                     {
+                                        decimal initialBalance = Vendomatic.Balance;
+
                                         Console.WriteLine($"You Selected: {item.Product.Name}");
                                         Console.ReadKey();
+
                                         Vendomatic.Balance -= item.Product.Price;
                                         item.Quantity -= 1;
                                         RemovedItems.Add(item);
-                                         string line2 = $"{DateTime.Now}   {item.Product.Name} {selectionInput}   {Vendomatic.Balance}      ";
-                                        AuditLog.WriteLine(line2);
+                                          line = $"{DateTime.Now}   {item.Product.Name} {selectionInput}    {initialBalance:C}      {Vendomatic.Balance:C}  ";
+                                        WriteLog(line);
 
                                         Pause("");
                                         break;
@@ -106,8 +118,8 @@ namespace Capstone.Views
                     return true;
 
                 case "3":
-                    string line3 = $"{DateTime.Now}   Give Change:   {Vendomatic.Balance:C}      $0.00";
-                    AuditLog.WriteLine(line3);
+                    line = $"{DateTime.Now}   Give Change:   {Vendomatic.Balance:C}      $0.00";
+                    WriteLog(line);
 
                     Vendomatic.ReturnChange(Vendomatic.Balance);
                     foreach(Stock itemPurchased in RemovedItems)
@@ -132,7 +144,6 @@ namespace Capstone.Views
                     Console.ReadKey();
                    
                     Vendomatic.Balance = 0;
-                    AuditLog.Close();
                     return true;
 
             }           

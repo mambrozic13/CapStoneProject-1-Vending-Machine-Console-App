@@ -60,7 +60,14 @@ namespace Capstone.Classes
         public decimal moneyInput = 0;
         public void FeedMoney(decimal moneyInput)
         {
-            Balance += moneyInput;
+            if (moneyInput == 1 || moneyInput == 2 || moneyInput == 5 || moneyInput == 10)
+            {
+                Balance += moneyInput;
+            }
+            else
+            {
+                Console.WriteLine("Sorry you entered a bill we can't accept. Please try again.");
+            }
         }
 
 
