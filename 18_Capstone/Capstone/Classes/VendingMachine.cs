@@ -24,9 +24,9 @@ namespace Capstone.Classes
         }
         
         // the location of the file holding our stock
-        public string path = @"C:\Users\MSpring\Git\c-module-1-capstone-team-3\18_Capstone\etc\vendingmachine.csv";
+        public string path = @"C:\Users\MAmbrozic\Git\c-module-1-capstone-team-3\18_Capstone\etc\vendingmachine.csv";
+        // for when we are on Marks public string path = @"C:\Users\MSpring\Git\c-module-1-capstone-team-3\18_Capstone\etc\vendingmachine.csv";
 
-        
         public void Load()
         {
             if (File.Exists(path))
@@ -63,6 +63,33 @@ namespace Capstone.Classes
             Balance += moneyInput;
         }
 
+
+       
+
+        public void ReturnChange(decimal balance)
+        {
+        int quarters = 0;
+        int dimes = 0;
+        int nickels = 0;
+
+            Balance *= 100;
+            while (Balance >= 25)
+            {
+                quarters++;
+                Balance -= 25;
+            }
+            while (Balance >= 10)
+            {
+                dimes++;
+                Balance -= 10;
+            }
+            while (Balance >= 5)
+            {
+                nickels++;
+                Balance -= 5;
+            }
+            Console.WriteLine($"Your change is Quarters: {quarters}, Dimes: {dimes}, Nickels: {nickels}");
+        }
 
         // ?? gets added when we try to access our VM class in main menu
         public VendingMachine()

@@ -36,7 +36,7 @@ namespace Capstone.Views
 
                     foreach (Stock item in Vendomatic.StockList)
                     {
-                        Console.WriteLine($"{item.Location} Name:{item.Product.Name} Price:{item.Product.Price} Quantity: {item.Quantity}");
+                        Console.WriteLine($"|| {item.Location} || {item.Product.Name} || Price:{item.Product.Price} || Quantity: {item.Quantity}");
                     }
                     Pause("");
                     // This should show our dictionary of Products from Vending Machine class.
