@@ -160,6 +160,7 @@ namespace Capstone.Classes
                                 Balance -= item.Product.Price;
                                 item.Quantity -= 1;
                                 RemovedItems.Add(item);
+                                // Audit for selection 2. Tried moving outside but no luck. Need access to item in foreach loop..
                                 string line = $"{DateTime.Now}   {item.Product.Name} {selectionInput}    {initialBalance:C}      {Balance:C}  ";
                                 WriteLog(line);
                                 break;
@@ -168,10 +169,6 @@ namespace Capstone.Classes
                             {
                                 Console.WriteLine("Sorry the item is Sold Out. Please make a new selection.");
                                 Console.ReadKey();
-
-                                // I made an attempt to say okay now you bought 5 of these.. its sold out so change the "quantity" of this thing to a string sold out.. didnt work.
-                                //item.Quantity.ToString("Sold Out");
-
                                 break;
                             }
                         }
