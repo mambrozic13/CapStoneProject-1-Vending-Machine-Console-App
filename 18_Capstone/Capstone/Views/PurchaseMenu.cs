@@ -8,12 +8,6 @@ namespace Capstone.Views
 {
     public class PurchaseMenu : CLIMenu
     {
-        List<Stock> RemovedItems = new List<Stock>();
-
-        //StreamWriter AuditLog = new StreamWriter("Log.txt");
-    
-        
-
         public PurchaseMenu(VendingMachine vm) : base(vm)
         {
             this.Title = "*** Purchase Menu ***";
@@ -23,127 +17,31 @@ namespace Capstone.Views
             this.menuOptions.Add("Q", "Quit");
         }
         
-        private void WriteLog(string line)
-        {
-            using (StreamWriter AuditLog = new StreamWriter("Log.txt", true))
-            {
-                AuditLog.WriteLine(line);
-            }
-        }
 
         protected override bool ExecuteSelection(string choice)
         {
-            Console.WriteLine($"Your current balance {Vendomatic.Balance:C}");
             switch (choice)
             {
                 case "1":
-                    Console.WriteLine("Please enter the amount to be deposited in bills of $1.00, $2.00, $5.00, or $10.00");
+                    Console.WriteLine($"Your current balance {Vendomatic.Balance:C}");
+                    Console.WriteLine("Please enter bills in the amount of $1.00, $2.00, $5.00, or $10.00");
                     string moneyInput = Console.ReadLine();
                     Vendomatic.FeedMoney(decimal.Parse(moneyInput));
-                    Console.WriteLine($"New Current Balance: {Vendomatic.Balance:C}");
-                    string line = $"{DateTime.Now}   Feed Money:    ${moneyInput}.00     {Vendomatic.Balance:C}";
-                    WriteLog(line);               
+                    Console.WriteLine($"Thank you! Your new balance is: {Vendomatic.Balance:C}");
+                    Vendomatic.AuditSelection1();
                     Pause("");
-
                     return true;
                 case "2":
-                    //Allows customer to select product
-                    Console.WriteLine("What product would you like to purchase?");
+                    Console.WriteLine($"Your current balance {Vendomatic.Balance:C}");
+                    Console.WriteLine("Please enter the location of the product you would like to purchase: ");
                     string selectionInput = Console.ReadLine().ToUpper().Trim();
-
-                    bool itemExists = false;
-                    foreach (Stock item in Vendomatic.StockList)
-                    {
-                        if (selectionInput == item.Location)
-                        {
-                            itemExists = true;
-                        }
-                    }
-                    if (!itemExists)
-                    {
-                        Console.WriteLine("Sorry the selection you made does not exist. Please check the list and Press enter to try again.");
-                        Console.ReadKey();
-                        break;
-                    }
-
-                    if (Vendomatic.Balance > 0)
-                    {
-                      foreach (Stock item in Vendomatic.StockList)
-                        {
-                            if (selectionInput == item.Location)
-                            {
-                                if (Vendomatic.Balance >= item.Product.Price)
-                                {
-                                    if (item.Quantity > 0)
-                                    {
-                                        decimal initialBalance = Vendomatic.Balance;
-
-                                        Console.WriteLine($"You Selected: {item.Product.Name}");
-                                        Console.ReadKey();
-
-                                        Vendomatic.Balance -= item.Product.Price;
-                                        item.Quantity -= 1;
-                                        RemovedItems.Add(item);
-                                          line = $"{DateTime.Now}   {item.Product.Name} {selectionInput}    {initialBalance:C}      {Vendomatic.Balance:C}  ";
-                                        WriteLog(line);
-
-                                        Pause("");
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Sorry the item is Sold Out. Please make a new selection.");
-                                        Console.ReadKey();
-                                        break;
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Insufficient Funds! Please feed more money into the machine before mkaing this purchase.");
-                                    Console.ReadKey();
-                                    break;
-                                }                       
-                            }
-                        }
-                        
-                    }
-                    else
-                    {
-                        Console.WriteLine("Insufficient Funds! Please feed money into the machine before making a purchase.");
-                        Console.ReadKey();
-                        break;
-                    }
-                    
-
+                    Vendomatic.SelectProduct(selectionInput);
                     return true;
 
                 case "3":
-                    line = $"{DateTime.Now}   Give Change:   {Vendomatic.Balance:C}      $0.00";
-                    WriteLog(line);
-
+                    Console.WriteLine($"Your current balance to be returned in change is: {Vendomatic.Balance:C}");
                     Vendomatic.ReturnChange(Vendomatic.Balance);
-                    foreach(Stock itemPurchased in RemovedItems)
-                    {
-                        if (itemPurchased.Product.Category == "Chip")
-                        {
-                            Console.WriteLine("Crunch Crunch, Yum!");
-                        }
-                        else if (itemPurchased.Product.Category == "Candy")
-                        {
-                            Console.WriteLine("Munch Munch, Yum!");
-                        }
-                        else if (itemPurchased.Product.Category == "Drink")
-                        {
-                            Console.WriteLine("Glug Glug, Yum!");
-                        }
-                        else if (itemPurchased.Product.Category == "gum")
-                        {
-                            Console.WriteLine("Chew Chew, Yum!");
-                        }
-                    }
-                    Console.ReadKey();
-                   
-                    Vendomatic.Balance = 0;
+                    Vendomatic.PrintOutSoundForEachPurchase();
                     return true;
 
             }           
