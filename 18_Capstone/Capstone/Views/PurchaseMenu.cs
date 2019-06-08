@@ -42,6 +42,7 @@ namespace Capstone.Views
                     Console.WriteLine($"Your current balance to be returned in change is: {Vendomatic.Balance:C}");
                     Vendomatic.ReturnChange(Vendomatic.Balance);
                     Vendomatic.PrintOutSoundForEachPurchase();
+                    Vendomatic.AuditSelection3();
                     return true;
 
             }           

@@ -63,9 +63,10 @@ namespace Capstone.Classes
 
         // This is the method we created to allow the user to input money and we then update our balance if the bill entered is an accepeted bill. (1,2,5,10)
         // This method is only called when the user makes selection 1 within our Purchase Menu.
-        public decimal moneyInput = 0;
+        protected decimal billsEnteredForAudit = 0;
         public void FeedMoney(decimal moneyInput)
         {
+            billsEnteredForAudit = moneyInput;
             if (moneyInput == 1 || moneyInput == 2 || moneyInput == 5 || moneyInput == 10)
             {
                 Balance += moneyInput;
@@ -77,13 +78,16 @@ namespace Capstone.Classes
         }
 
 
-       
+
         // This is our method we created to Return Change to our user when they make selection 3 at the Purchase Menu.
+        protected decimal changeForAudit = 0;
         public void ReturnChange(decimal balance)
         {
-        int quarters = 0;
-        int dimes = 0;
-        int nickels = 0;
+
+            changeForAudit = balance;
+            int quarters = 0;
+            int dimes = 0;
+            int nickels = 0;
 
             Balance *= 100;
             while (Balance >= 25)
@@ -192,7 +196,7 @@ namespace Capstone.Classes
         // Audits Selection 3 from Purchase Menu.
         public void AuditSelection3 ()
         {
-            string line = $"{DateTime.Now}   Give Change:   {Balance:C}      $0.00";
+            string line = $"{DateTime.Now}   Give Change:   {changeForAudit:C}      $0.00";
             WriteLog(line);
         }
 
@@ -200,12 +204,9 @@ namespace Capstone.Classes
         // Audits Selection 1 from Purchase Menu.
         public void AuditSelection1()
         {
-            string line = $"{DateTime.Now}   Feed Money:    ${moneyInput}.00     {Balance:C}";
+            string line = $"{DateTime.Now}   Feed Money:    {billsEnteredForAudit:C}     {Balance:C}";
             WriteLog(line);
         }
-
-
-
 
 
         // Method to print out sound after selection 3 in Purchase Menu. This is only shown when a user is done and "Consumes" what they purchased.
