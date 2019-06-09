@@ -19,13 +19,16 @@ namespace CapstoneTests
             Product product = new Product("Potato Crisps", 3.05M, "Chip");
             Stock item = new Stock(product, 5, "A1");
             List<Stock> RemovedItems = new List<Stock>();
-            RemovedItems.Add(item);
+            
 
             // Act
-            vm.PrintOutSoundForEachPurchase();
+            RemovedItems.Add(item);
+            string actualResult = vm.PrintOutSoundForEachPurchase(RemovedItems);
+            string expectedTestResult = "Crunch Crunch, Yum!";
 
             // Assert
-            
+            Assert.AreEqual(expectedTestResult, actualResult);
+
 
         }
     }

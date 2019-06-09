@@ -7,6 +7,11 @@ namespace Capstone.Classes
 {
     public class VendingMachine 
     {
+        // These are the two paths we used that contains our file with the Vending Machine stock. We can then use this path to populate our dictionary.
+        //public string path = @"C:\Users\MAmbrozic\Git\c-module-1-capstone-team-3\18_Capstone\etc\vendingmachine.csv";
+        public string path = @"C:\Users\MSpring\Git\c-module-1-capstone-team-3\18_Capstone\etc\vendingmachine.csv";
+
+
         // This is our Dictionary that holds our Vending Machine "stock"
         private Dictionary<string, Stock> InternalStockList = new Dictionary<string, Stock>(); 
         public Stock[] StockList
@@ -22,11 +27,6 @@ namespace Capstone.Classes
                 return tempList.ToArray();
             }
         }
-        
-        // These are the two paths we used that contains our file with the Vending Machine stock. We can then use this path to populate our dictionary.
-        
-        //public string path = @"C:\Users\MAmbrozic\Git\c-module-1-capstone-team-3\18_Capstone\etc\vendingmachine.csv";
-        public string path = @"C:\Users\MSpring\Git\c-module-1-capstone-team-3\18_Capstone\etc\vendingmachine.csv";
 
 
         // Our method we created to populate our Vending Machine with the "stock" within our file.
@@ -70,6 +70,7 @@ namespace Capstone.Classes
             if (moneyInput == 1 || moneyInput == 2 || moneyInput == 5 || moneyInput == 10)
             {
                 Balance += moneyInput;
+                Console.WriteLine($"Thank you! Your new balance is: {Balance:C}");
             }
             else
             {
@@ -111,7 +112,7 @@ namespace Capstone.Classes
 
         // Here we created a List to be able to track and hold the items(stock) that the user purchased. 
         // This way we had a list we could check and use later for other situations.
-        List<Stock> RemovedItems = new List<Stock>();
+        public List<Stock> RemovedItems = new List<Stock>();
 
 
         // Created a WriteLog for ourselves to use for all of the Audit Methods we use to track all user transactions and use of Vending Machine.
@@ -125,7 +126,7 @@ namespace Capstone.Classes
 
 
         // This is our Method we originally created within our Purchase menu. 
-        // I moved all the code here and created a method that did the same thing. Cleans up menu and puts this action where it belongs. 
+        // We moved all the code here and created a method that did the same thing. Cleans up menu and puts this action where it belongs. 
         public void SelectProduct(string selectionInput)
         {
             bool itemExists = false;
@@ -154,7 +155,7 @@ namespace Capstone.Classes
                             {
                                 decimal initialBalance = Balance;
 
-                                Console.WriteLine($"You Selected: {item.Product.Name}");
+                                Console.WriteLine($"You Selected: {item.Product.Name}. Enjoy!\r\nPlease Press Enter to Return to Purchase Menu..");
                                 Console.ReadKey();
 
                                 Balance -= item.Product.Price;
@@ -207,31 +208,53 @@ namespace Capstone.Classes
 
 
         // Method to print out sound after selection 3 in Purchase Menu. This is only shown when a user is done and "Consumes" what they purchased.
-        public void PrintOutSoundForEachPurchase()
+        // We need a List of type Stock for this method. (Removed items created and populated with selections user made above)
+        public string PrintOutSoundForEachPurchase(List<Stock> removedItems)
         {
-            foreach (Stock itemPurchased in RemovedItems)
+            // Created this string to be able to test expected output of consumption in our unit testing..
+            string soundPrintedOutByUserConsumption = "";
+            foreach (Stock itemPurchased in removedItems)
             {
                 if (itemPurchased.Product.Category == "Chip")
                 {
                     Console.WriteLine("Crunch Crunch, Yum!");
+                    soundPrintedOutByUserConsumption = "Crunch Crunch, Yum!";
                 }
                 else if (itemPurchased.Product.Category == "Candy")
                 {
                     Console.WriteLine("Munch Munch, Yum!");
+                    soundPrintedOutByUserConsumption = "Munch Munch, Yum!";
                 }
                 else if (itemPurchased.Product.Category == "Drink")
                 {
                     Console.WriteLine("Glug Glug, Yum!");
+                    soundPrintedOutByUserConsumption = "Glug Glug, Yum!";
                 }
                 else if (itemPurchased.Product.Category == "Gum")
                 {
                     Console.WriteLine("Chew Chew, Yum!");
+                    soundPrintedOutByUserConsumption = "Chew Chew, Yum!";
                 }
             }
-            Console.ReadKey();
-
             Balance = 0;
+            return soundPrintedOutByUserConsumption;
         }
 
+
+        // This should show the user all of the Items in our Vending Machine for purchase.
+        public void DisplayVendingMachineItems()
+        {
+            foreach (Stock item in StockList)
+            {
+                if (item.Quantity > 0)
+                {
+                    Console.WriteLine($"|| {item.Location} || {item.Product.Name} || Price:{item.Product.Price} || Quantity: {item.Quantity}");
+                }
+                else if (item.Quantity == 0)
+                {
+                    Console.WriteLine($"|| {item.Location} || {item.Product.Name} || Price:{item.Product.Price} || Quantity: SOLD OUT!");
+                }
+            }
+        }
     }
 }
