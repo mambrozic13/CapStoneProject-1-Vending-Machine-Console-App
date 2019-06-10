@@ -25,8 +25,8 @@ namespace Capstone.Classes
         
         // These are the two paths we used that contains our file with the Vending Machine stock. We can then use this path to populate our dictionary.
         
-        //public string path = @"C:\Users\MAmbrozic\Git\c-module-1-capstone-team-3\18_Capstone\etc\vendingmachine.csv";
-        public string path = @"C:\Users\MSpring\Git\c-module-1-capstone-team-3\18_Capstone\etc\vendingmachine.csv";
+        public string path = @"C:\Users\MAmbrozic\Git\c-module-1-capstone-team-3\18_Capstone\etc\vendingmachine.csv";
+        //public string path = @"C:\Users\MSpring\Git\c-module-1-capstone-team-3\18_Capstone\etc\vendingmachine.csv";
 
 
         // Our method we created to populate our Vending Machine with the "stock" within our file.
