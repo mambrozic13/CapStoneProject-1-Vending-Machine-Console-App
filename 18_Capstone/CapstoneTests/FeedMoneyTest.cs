@@ -10,22 +10,17 @@ namespace CapstoneTests
         public void TestingToMakeSureBalanceIncreasesAfterUserInputsMoney()
         {
             // Arrange
-
-            //creates new vending machine to test our method
             VendingMachine testMachine = new VendingMachine();
 
             // Act
-            
-            // we expect these two values not to match since it is one of our accepted bills and we can add it.
-            decimal testCase = 10.00M;
-            testMachine.Balance = 10;
-            testMachine.FeedMoney(testCase);
+            decimal testCase = 0;
+            decimal moneyInput = 10;
+            testMachine.Balance = 0;
+            testMachine.FeedMoney(moneyInput);
 
 
 
             // Assert
-
-            // Shows we added the testCase value of 10.00 using our method.
             Assert.AreNotEqual(testCase, testMachine.Balance , "User entered invalid bill.");
             
         }

@@ -33,14 +33,10 @@ namespace Capstone.Views
             switch (choice)
             {
                 case "1":
-
-                    foreach (Stock item in Vendomatic.StockList)
-                    {
-                        Console.WriteLine($"|| {item.Location} || {item.Product.Name} || Price:{item.Product.Price} || Quantity: {item.Quantity}");
-                    }
+                    Console.Clear();
+                    Vendomatic.DisplayVendingMachineItems();
                     Pause("");
-                    // This should show our dictionary of Products from Vending Machine class.
-                    // be able to go up one menu when "Q"
+                    
                     return true;
                 case "2":
 
