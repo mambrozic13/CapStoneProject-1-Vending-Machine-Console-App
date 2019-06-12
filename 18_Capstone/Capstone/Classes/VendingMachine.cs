@@ -8,8 +8,8 @@ namespace Capstone.Classes
     public class VendingMachine 
     {
         // These are the two paths we used that contains our file with the Vending Machine stock. We can then use this path to populate our dictionary.
-        //public string path = @"C:\Users\MAmbrozic\Git\c-module-1-capstone-team-3\18_Capstone\etc\vendingmachine.csv";
-        public string path = @"C:\Users\MSpring\Git\c-module-1-capstone-team-3\18_Capstone\etc\vendingmachine.csv";
+        public string path = @"C:\Users\MAmbrozic\Git\c-module-1-capstone-team-3\18_Capstone\etc\vendingmachine.csv";
+        //public string path = @"C:\Users\MSpring\Git\c-module-1-capstone-team-3\18_Capstone\etc\vendingmachine.csv";
 
 
         // This is our Dictionary that holds our Vending Machine "stock"
@@ -58,7 +58,7 @@ namespace Capstone.Classes
 
 
         // This is our Balance. We use this in several different locations throughout our program.
-        public decimal Balance { get; set; } 
+        public decimal Balance { get; private set; } 
 
 
         // This is the method we created to allow the user to input money and we then update our balance if the bill entered is an accepeted bill. (1,2,5,10)
@@ -250,7 +250,7 @@ namespace Capstone.Classes
                 {
                     Console.WriteLine($"|| {item.Location} || {item.Product.Name} || Price:{item.Product.Price} || Quantity: {item.Quantity}");
                 }
-                else if (item.Quantity == 0)
+                else 
                 {
                     Console.WriteLine($"|| {item.Location} || {item.Product.Name} || Price:{item.Product.Price} || Quantity: SOLD OUT!");
                 }
